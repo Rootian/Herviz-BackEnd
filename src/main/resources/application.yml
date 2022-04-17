@@ -1,0 +1,11 @@
+# DataSource Config
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://sh-cynosdbmysql-grp-p0taec8i.sql.tencentcdb.com:28503/db_proj
+    username: root
+    password: Rootroot651
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # ‰≥ˆsql»’÷æ
+  mapper-locations: classpath*:mapper/**Mapper.xml
