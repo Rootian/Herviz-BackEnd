@@ -1,7 +1,17 @@
 package com.db.herviz;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.db.herviz.entity.Customer;
+import com.db.herviz.entity.Payment;
+import com.db.herviz.entity.Vehicle;
+import com.db.herviz.entity.VehicleClass;
 import com.db.herviz.service.CustomerService;
+import com.db.herviz.service.PaymentService;
+import com.db.herviz.service.VehicleClassService;
+import com.db.herviz.service.VehicleService;
 import com.db.herviz.service.impl.CustomerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -9,21 +19,39 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
-import java.sql.Wrapper;
 
 
 @SpringBootTest(classes = HervizApplication.class)
-@WebAppConfiguration
 @Slf4j
 class HervizApplicationTests {
 
     @Resource
     private CustomerServiceImpl customerService;
 
+    @Resource
+    private VehicleService vehicleService;
+
+    @Resource
+    private VehicleClassService vehicleClassService;
+
+    @Resource
+    private PaymentService paymentService;
+
     @Test
     void contextLoads() {
-        Customer byId = customerService.getById(1);
+        LambdaQueryWrapper<Customer> qr = new LambdaQueryWrapper<>();
+
+        Customer byId = customerService.getOne(Wrappers.<Customer>lambdaQuery().eq(Customer::getId, "1"));
         log.info(byId.toString());
+
+        Vehicle one = vehicleService.getOne(Wrappers.<Vehicle>lambdaQuery().eq(Vehicle::getId, 1));
+        log.info(one.toString());
+
+        VehicleClass vc = vehicleClassService.getOne(Wrappers.<VehicleClass>lambdaQuery().eq(VehicleClass::getId, 1));
+        log.info(vc.toString());
+
+        Payment payment = paymentService.getById(1);
+        log.info(payment.toString());
     }
 
 }
