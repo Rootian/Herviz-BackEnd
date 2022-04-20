@@ -19,8 +19,6 @@ public class Office {
 
     private Long phoneNo;
 
-    private String country;
-
     private String state;
 
     private String city;
