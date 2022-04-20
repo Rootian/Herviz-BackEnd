@@ -8,4 +8,6 @@ import com.db.herviz.entity.RentalOrder;
  * @Date: 2022/4/18 18:37
  */
 public interface RentalOrderService extends IService<RentalOrder> {
+
+    boolean checkCarAvailable(Long carId, Long pickUpDate, Long dropDate);
 }
