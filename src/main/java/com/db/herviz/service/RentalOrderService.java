@@ -2,6 +2,9 @@ package com.db.herviz.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.db.herviz.entity.RentalOrder;
+import com.db.herviz.entity.Vehicle;
+
+import java.util.List;
 
 /**
  * @Author: Weiqi Chen
@@ -9,5 +12,9 @@ import com.db.herviz.entity.RentalOrder;
  */
 public interface RentalOrderService extends IService<RentalOrder> {
 
+    List<Vehicle> getAvailableCarInfo(Long pickUpLoc, Long pickUpDate, Long dropDate);
+
     boolean checkCarAvailable(Long carId, Long pickUpDate, Long dropDate);
+
+    void saveOrder(RentalOrder order);
 }

@@ -11,5 +11,6 @@ import java.util.List;
  */
 public interface VehicleService extends IService<Vehicle> {
 
-    List<Long> getAvailableCarInfo(Long pickUpLoc, Long pickUpDate, Long dropDate);
+    List<Vehicle> getCarList(Long loc);
+
 }

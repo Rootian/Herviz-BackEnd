@@ -40,6 +40,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestBody String body) {
+        // todo 用户名重复
         User user = JSON.parseObject(body, User.class);
         String md5Pw = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
         user.setPassword(md5Pw);

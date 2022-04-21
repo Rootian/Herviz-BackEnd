@@ -1,5 +1,6 @@
 package com.db.herviz.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -15,11 +16,13 @@ import java.util.Date;
 @TableName("zcq.invoice")
 public class Invoice {
 
-    @TableId("invo_id")
+    @TableId(value = "invo_id", type = IdType.AUTO)
     private Long id;
 
     @TableField("invo_date")
     private Date date;
 
     private Double amount;
+
+    private Long orderId;
 }
