@@ -13,7 +13,7 @@ import java.util.Date;
  * @Date: 2022/4/18 20:16
  */
 @Data
-@TableName("zcq.invoice")
+@TableName("zcq_invoice")
 public class Invoice {
 
     @TableId(value = "invo_id", type = IdType.AUTO)

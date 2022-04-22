@@ -72,10 +72,13 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
         List<RentalOrder> orderList = list(wrapper);
 
         for (RentalOrder order : orderList) {
-            if ((order.getPDate().before(new Date(pickUpDate)) && order.getDDate().after(new Date(pickUpDate)))
-                    || (order.getPDate().before(new Date(dropDate)) && order.getDDate().after(new Date(dropDate)))) {
+            if (Math.max(order.getPDate().getTime(), pickUpDate) < Math.min(order.getDDate().getTime(), dropDate)) {
                 return false;
             }
+//            if ((order.getPDate().before(new Date(pickUpDate)) && order.getDDate().after(new Date(pickUpDate)))
+//                    || (order.getPDate().before(new Date(dropDate)) && order.getDDate().after(new Date(dropDate)))) {
+//                return false;
+//            }
         }
         return true;
     }
@@ -126,7 +129,11 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
         if (carList.size() == 0)
             return -1l;
         // assign first available car
-        return carList.get(0).getId();
+        for (Vehicle car : carList) {
+            if (car.getClassId().equals(order.getClassId()))
+                return carList.get(0).getId();
+        }
+        return -1l;
     }
 
 
