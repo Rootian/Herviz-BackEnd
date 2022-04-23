@@ -6,6 +6,7 @@ spring:
     username: root
     password: Rootroot651
 mybatis-plus:
+  typeEnumsPackage: com.db.herviz.domain
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #Êä³ösqlÈÕÖ¾
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #ï¿½ï¿½ï¿½sqlï¿½ï¿½Ö¾
 #  mapper-locations: classpath*:mapper/**Mapper.xml

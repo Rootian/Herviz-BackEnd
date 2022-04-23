@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author Rootian
@@ -32,5 +34,11 @@ public class OrderController {
             return ResponseX.fail(e.getMessage());
         }
         return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String listOrder(Long userId) {
+        List<RentalOrder> orderList = orderService.listOrder(userId);
+        return ResponseX.success(orderList);
     }
 }

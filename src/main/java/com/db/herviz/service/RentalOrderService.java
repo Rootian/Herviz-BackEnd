@@ -1,6 +1,7 @@
 package com.db.herviz.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.db.herviz.domain.OrderStatusEnum;
 import com.db.herviz.entity.RentalOrder;
 import com.db.herviz.entity.Vehicle;
 
@@ -17,4 +18,8 @@ public interface RentalOrderService extends IService<RentalOrder> {
     boolean checkCarAvailable(Long carId, Long pickUpDate, Long dropDate);
 
     void saveOrder(RentalOrder order);
+
+    List<RentalOrder> listOrder(Long userId);
+
+    void setOrderStatus(Long orderId, OrderStatusEnum status);
 }

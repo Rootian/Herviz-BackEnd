@@ -3,6 +3,7 @@ package com.db.herviz.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.db.herviz.domain.OrderStatusEnum;
 import lombok.Data;
 
 import java.util.Date;
@@ -39,5 +40,7 @@ public class RentalOrder {
     private Long uId;
 
     private Long classId;
+
+    private OrderStatusEnum status;
 
 }

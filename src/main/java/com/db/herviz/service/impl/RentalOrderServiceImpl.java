@@ -1,8 +1,10 @@
 package com.db.herviz.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.db.herviz.domain.BusinessException;
+import com.db.herviz.domain.OrderStatusEnum;
 import com.db.herviz.entity.Invoice;
 import com.db.herviz.entity.RentalOrder;
 import com.db.herviz.entity.Vehicle;
@@ -99,6 +101,7 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
         if (vehicleId < 0)
             throw new BusinessException("out of stock");
         order.setVin(vehicleId);
+        order.setStatus(OrderStatusEnum.CREATED);
 
         // save order
         if (!save(order))
@@ -112,6 +115,28 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
         if (!invoiceService.save(invoice))
             throw new BusinessException("generate invoice fail");
 
+    }
+
+    @Override
+    public List<RentalOrder> listOrder(Long userId) {
+        QueryWrapper<RentalOrder> wrapper = new QueryWrapper<>();
+        wrapper.eq("u_id", userId);
+        return list(wrapper);
+    }
+
+    /**
+     * @Description change order status
+     * @Author Rootian
+     * @Date 2022-04-22
+     * @param: orderId
+     * @param: status
+     * @return void
+     */
+    @Override
+    public void setOrderStatus(Long orderId, OrderStatusEnum status) {
+        RentalOrder order = getById(orderId);
+        order.setStatus(status);
+        updateById(order);
     }
 
     /**
