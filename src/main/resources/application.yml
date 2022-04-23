@@ -5,6 +5,11 @@ spring:
     url: jdbc:mysql://sh-cynosdbmysql-grp-p0taec8i.sql.tencentcdb.com:28503/db_proj
     username: root
     password: Rootroot651
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 3000
 mybatis-plus:
   typeEnumsPackage: com.db.herviz.domain
   configuration:

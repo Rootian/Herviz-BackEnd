@@ -4,11 +4,13 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.db.herviz.domain.BusinessException;
+import com.db.herviz.domain.CacheFindList;
 import com.db.herviz.domain.OrderStatusEnum;
 import com.db.herviz.entity.Invoice;
 import com.db.herviz.entity.RentalOrder;
 import com.db.herviz.entity.Vehicle;
 import com.db.herviz.mapper.RentalOrderMapper;
+import com.db.herviz.redis.RedisUtil;
 import com.db.herviz.service.InvoiceService;
 import com.db.herviz.service.RentalOrderService;
 import com.db.herviz.service.VehicleClassService;
@@ -40,7 +42,10 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
     private VehicleClassService classService;
 
     @Override
+    @CacheFindList
     public List<Vehicle> getAvailableCarInfo(Long pickUpLoc, Long pickUpDate, Long dropDate) {
+
+
         // get the list of all cars from pickup location
         List<Vehicle> carList = vehicleService.getCarList(pickUpLoc);
         List<Vehicle> availableList = new ArrayList<>();
