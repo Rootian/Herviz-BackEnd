@@ -30,4 +30,13 @@ public class ResponseX {
 
         return JSON.toJSONString(obj, SerializerFeature.DisableCircularReferenceDetect);
     }
+
+    public static String page(Object data, long total) {
+        JSONObject obj = new JSONObject();
+        obj.put("code", 200);
+        obj.put("data", data);
+        obj.put("total", total);
+
+        return JSON.toJSONString(obj, SerializerFeature.DisableCircularReferenceDetect);
+    }
 }

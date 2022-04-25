@@ -3,12 +3,13 @@ package com.db.herviz.service.impl;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.db.herviz.domain.BusinessException;
-import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.User;
 import com.db.herviz.mapper.UserMapper;
 import com.db.herviz.service.UserService;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -80,5 +81,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String md5Pw = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
         user.setPassword(md5Pw);
         save(user);
+    }
+
+    @Override
+    public Page<User> getUserList(String keywords, Integer pageNum, Integer pageLimit) {
+        QueryWrapper wrapper = new QueryWrapper();
+        if (Strings.isNotBlank(keywords)) {
+            wrapper.like("username", keywords);
+        }
+        Page<User> page = new Page<>(pageNum, pageLimit);
+        baseMapper.selectPage(page, wrapper);
+        return page;
     }
 }
