@@ -1,9 +1,12 @@
 package com.db.herviz.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -18,8 +21,11 @@ public class Coupon {
     @TableId(value = "coupon_id", type = IdType.AUTO)
     private Long id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd")
     private Date sDate;
 
+    @JSONField(format = "yyyy-MM-dd")
     private Date eDate;
 
     private Double discount;

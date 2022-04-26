@@ -11,6 +11,7 @@ import com.db.herviz.entity.Customer;
 import com.db.herviz.entity.User;
 import com.db.herviz.service.CustomerService;
 import com.db.herviz.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ import java.util.Objects;
  * @Date 2022-04-17
  */
 @RestController
+@Api
 @RequestMapping(value = "/api/auth")
 public class AuthController {
 

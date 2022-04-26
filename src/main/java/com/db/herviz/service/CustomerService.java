@@ -9,4 +9,6 @@ import org.springframework.stereotype.Service;
  * @Date: 2022/4/17 16:53
  */
 public interface CustomerService extends IService<Customer> {
+
+    public Customer getCustomerByUId (int uId);
 }

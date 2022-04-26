@@ -7,6 +7,7 @@ import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Invoice;
 import com.db.herviz.service.InvoiceService;
 import com.db.herviz.service.PaymentService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/payment")
+@Api
 public class paymentController {
 
     @Autowired

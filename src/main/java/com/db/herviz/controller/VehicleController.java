@@ -1,12 +1,14 @@
 package com.db.herviz.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Vehicle;
 import com.db.herviz.entity.VehicleClass;
 import com.db.herviz.service.RentalOrderService;
 import com.db.herviz.service.VehicleClassService;
 import com.db.herviz.service.VehicleService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api/vehicle")
+@Api
 public class VehicleController {
 
     @Autowired
@@ -29,6 +32,9 @@ public class VehicleController {
 
     @Autowired
     private VehicleClassService classService;
+
+    @Autowired
+    private VehicleService vehicleService;
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String searchAvailableCar(@RequestBody String body) {
@@ -44,5 +50,11 @@ public class VehicleController {
         }
         List<VehicleClass> classInfoList = classService.getBatchVehicleClassInfo(new ArrayList<>(classSet));
         return ResponseX.success(classInfoList);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String getVehicleList(String keywords, Integer page, Integer limit) {
+        Page<Vehicle> resultList = vehicleService.getVehicleList(keywords, page, limit);
+        return ResponseX.page(resultList.getRecords(), resultList.getTotal());
     }
 }

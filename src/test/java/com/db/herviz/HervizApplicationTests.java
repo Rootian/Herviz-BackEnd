@@ -4,14 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.db.herviz.entity.Customer;
-import com.db.herviz.entity.Payment;
-import com.db.herviz.entity.Vehicle;
-import com.db.herviz.entity.VehicleClass;
-import com.db.herviz.service.CustomerService;
-import com.db.herviz.service.PaymentService;
-import com.db.herviz.service.VehicleClassService;
-import com.db.herviz.service.VehicleService;
+import com.db.herviz.entity.*;
+import com.db.herviz.service.*;
+import com.db.herviz.service.impl.CouponCustService;
 import com.db.herviz.service.impl.CustomerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -19,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @SpringBootTest(classes = HervizApplication.class)
@@ -37,6 +33,12 @@ class HervizApplicationTests {
     @Resource
     private PaymentService paymentService;
 
+    @Resource
+    private CouponCustService couponCustService;
+
+    @Resource
+    private CouponService couponService;
+
     @Test
     void contextLoads() {
         LambdaQueryWrapper<Customer> qr = new LambdaQueryWrapper<>();
@@ -52,6 +54,14 @@ class HervizApplicationTests {
 
         Payment payment = paymentService.getById(1);
         log.info(payment.toString());
+
+
+    }
+
+    @Test
+    public void test() throws Exception{
+
+        log.info(couponService.getCouponByUserId(1).toString());
     }
 
 }

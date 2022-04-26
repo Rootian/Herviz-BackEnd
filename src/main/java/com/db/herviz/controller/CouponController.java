@@ -1,15 +1,18 @@
 package com.db.herviz.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.db.herviz.domain.BusinessException;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Coupon;
+import com.db.herviz.entity.Customer;
 import com.db.herviz.service.CouponService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.db.herviz.service.CustomerService;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @Author: Weiqi Chen
@@ -22,7 +25,10 @@ public class CouponController {
     @Resource
     private CouponService couponService;
 
-    @RequestMapping("/add")
+    @Resource
+    private CustomerService customerService;
+
+    @PostMapping("/add")
     public String createCoupon(@RequestBody Coupon coupon) {
         try {
             couponService.save(coupon);
@@ -32,4 +38,21 @@ public class CouponController {
 
         return ResponseX.success(null);
     }
+
+    @GetMapping("/getByUserId")
+    public String getCouponByUserId(int userId) {
+        List<Coupon> couponByUserId;
+        try {
+            couponByUserId = couponService.getCouponByUserId(userId);
+        } catch (BusinessException e) {
+            return ResponseX.fail(e.getMessage());
+        }
+
+        return ResponseX.success(couponByUserId);
+
+    }
+
+
+
+
 }

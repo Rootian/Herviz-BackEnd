@@ -6,13 +6,15 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Author: Chen Weiqi
  * @Date: 2022/4/18 17:09
  */
 @Data
 @TableName("zcq_vehicle_class")
-public class VehicleClass {
+public class VehicleClass implements Serializable {
 
     @TableId(value = "class_id")
     private Long id;
