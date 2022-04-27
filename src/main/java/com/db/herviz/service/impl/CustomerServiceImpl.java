@@ -1,5 +1,6 @@
 package com.db.herviz.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.db.herviz.entity.Customer;
 import com.db.herviz.mapper.CustomerMapper;
@@ -12,4 +13,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> implements CustomerService {
+    @Override
+    public Customer getCustomerByUId(int uId) {
+        return getOne(Wrappers.<Customer>lambdaQuery().eq(Customer::getUId, uId));
+    }
 }

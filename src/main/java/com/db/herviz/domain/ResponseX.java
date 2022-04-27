@@ -20,7 +20,7 @@ public class ResponseX {
         obj.put("code", 200);
         obj.put("data", data);
 
-        return JSON.toJSONString(obj, SerializerFeature.DisableCircularReferenceDetect);
+        return JSON.toJSONString(obj);
     }
 
     public static String fail(String message) {

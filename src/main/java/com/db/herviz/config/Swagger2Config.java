@@ -34,7 +34,7 @@ public class Swagger2Config {
         return new ApiInfoBuilder()
                 .title("Herviz的接口文档")
                 .description("相关接口的文档")
-                .termsOfServiceUrl("http://localhost:8080/doc")
+                .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
                 .version("1.0")
                 .build();
     }

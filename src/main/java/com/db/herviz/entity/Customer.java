@@ -15,10 +15,10 @@ import lombok.Data;
 public class Customer {
 
     @TableId(value = "c_id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     @TableField("c_type")
-    private Boolean type;
+    private String type;
 
     private String firstName;
 
