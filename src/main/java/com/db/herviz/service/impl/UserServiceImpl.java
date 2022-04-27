@@ -42,7 +42,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException("incorrect password");
         }
         // construct session id
-        String sessionId = String.valueOf(System.currentTimeMillis()) + "_" + String.valueOf(user.getId());
+        String sessionId = String.valueOf(System.currentTimeMillis()) + "_" + String.valueOf(user.getId()) + "_" + "user";
 
         StpUtil.login(sessionId);
 

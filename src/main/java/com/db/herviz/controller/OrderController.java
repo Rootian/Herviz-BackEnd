@@ -1,6 +1,8 @@
 package com.db.herviz.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.db.herviz.domain.BusinessException;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.RentalOrder;
@@ -40,9 +42,55 @@ public class OrderController {
         return ResponseX.success(null);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String listOrder(Long userId) {
-        List<RentalOrder> orderList = orderService.listOrder(userId);
+    /**
+     * @Description list order for customer
+     * @Author Rootian
+     * @Date 2022-04-25
+     * @param: userId
+     * @return java.lang.String
+     */
+    @RequestMapping(value = "/listForUser", method = RequestMethod.GET)
+    public String listOrderForUser() {
+        if (!StpUtil.isLogin()) {
+            return ResponseX.fail("please log in first");
+        }
+
+        List<RentalOrder> orderList = orderService.listOrder();
         return ResponseX.success(orderList);
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String updateOrder(@RequestBody String body) {
+        RentalOrder order = JSONObject.parseObject(body, RentalOrder.class);
+        try {
+            orderService.updateById(order);
+        } catch (Exception e) {
+            return ResponseX.fail("update order fail");
+        }
+
+        return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String getOrderList(String keywords, Integer page, Integer limit) {
+        Page<RentalOrder> orderList = orderService.getOrderList(keywords, page, limit);
+        return ResponseX.page(orderList.getRecords(), orderList.getTotal());
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public String deleteOrder(Long id) {
+        try {
+            orderService.removeById(id);
+        } catch (Exception e) {
+            return ResponseX.fail("Delete Fail");
+        }
+
+        return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/cancel", method = RequestMethod.DELETE)
+    public String cancelOrder(Long id) {
+        orderService.cancelOrder(id);
+        return ResponseX.success(null);
     }
 }

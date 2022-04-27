@@ -1,5 +1,6 @@
 package com.db.herviz.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.db.herviz.entity.VehicleClass;
 
@@ -32,4 +33,6 @@ public interface VehicleClassService extends IService<VehicleClass> {
     Double getRentalRate(Long classId);
 
     Double getRentalFee(Long classId);
+
+    Page<VehicleClass> getClassList(String keywords, Integer page, Integer limit);
 }

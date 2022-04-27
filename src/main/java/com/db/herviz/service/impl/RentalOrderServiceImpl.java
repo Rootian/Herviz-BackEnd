@@ -2,12 +2,14 @@ package com.db.herviz.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.db.herviz.domain.BusinessException;
 import com.db.herviz.domain.CacheFindList;
 import com.db.herviz.domain.OrderStatusEnum;
 import com.db.herviz.entity.Invoice;
 import com.db.herviz.entity.RentalOrder;
+import com.db.herviz.entity.User;
 import com.db.herviz.entity.Vehicle;
 import com.db.herviz.mapper.RentalOrderMapper;
 import com.db.herviz.redis.RedisUtil;
@@ -15,6 +17,7 @@ import com.db.herviz.service.InvoiceService;
 import com.db.herviz.service.RentalOrderService;
 import com.db.herviz.service.VehicleClassService;
 import com.db.herviz.service.VehicleService;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,9 +126,12 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
     }
 
     @Override
-    public List<RentalOrder> listOrder(Long userId) {
+    public List<RentalOrder> listOrder() {
+        String sessionId = StpUtil.getLoginIdAsString();
+        Long uId = Long.valueOf(sessionId.split("_")[1]);
+
         QueryWrapper<RentalOrder> wrapper = new QueryWrapper<>();
-        wrapper.eq("u_id", userId);
+        wrapper.eq("u_id", uId);
         return list(wrapper);
     }
 
@@ -142,6 +148,22 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
         RentalOrder order = getById(orderId);
         order.setStatus(status);
         updateById(order);
+    }
+
+    @Override
+    public void cancelOrder(Long id) {
+        setOrderStatus(id, OrderStatusEnum.CANCELED);
+    }
+
+    @Override
+    public Page<RentalOrder> getOrderList(String keywords, Integer page, Integer limit) {
+        QueryWrapper wrapper = new QueryWrapper();
+        if (Strings.isNotBlank(keywords)) {
+            // search keywords
+        }
+        Page<RentalOrder> pages = new Page<>(page, limit);
+        baseMapper.selectPage(pages, wrapper);
+        return pages;
     }
 
     /**
