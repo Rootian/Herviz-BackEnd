@@ -1,9 +1,12 @@
 package com.db.herviz.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @Author: Chen Weiqi
@@ -11,9 +14,9 @@ import lombok.Data;
  */
 @Data
 @TableName("zcq_vehicle_class")
-public class VehicleClass {
+public class VehicleClass implements Serializable {
 
-    @TableId("class_id")
+    @TableId(value = "class_id", type = IdType.AUTO)
     private Long id;
 
     @TableField("class_type")
@@ -22,5 +25,9 @@ public class VehicleClass {
     private Double rentalRate;
 
     private Double fee;
+
+    private Integer seat;
+
+    private Integer bag;
 
 }

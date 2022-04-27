@@ -10,16 +10,18 @@ import java.io.Serializable;
 /**
  * @Description:
  * @Author Rootian
- * @Date 2022-04-20
+ * @Date 2022-04-27
  */
 @Data
-@TableName("zcq_user")
-public class User implements Serializable {
-
+@TableName("zcq_staff")
+public class Staff implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
 
     private String username;
 
     private String password;
+
+    private String name;
+
 }

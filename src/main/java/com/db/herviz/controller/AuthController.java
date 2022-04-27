@@ -1,14 +1,19 @@
 package com.db.herviz.controller;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.db.herviz.domain.BusinessException;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Customer;
+import com.db.herviz.entity.Staff;
 import com.db.herviz.entity.User;
 import com.db.herviz.service.CustomerService;
+import com.db.herviz.service.StaffService;
 import com.db.herviz.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,11 +29,15 @@ import java.util.Objects;
  * @Date 2022-04-17
  */
 @RestController
+@Api
 @RequestMapping(value = "/api/auth")
 public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StaffService staffService;
 
 
     /**
@@ -40,10 +49,9 @@ public class AuthController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestBody String body) {
+        // todo 用户名重复
         User user = JSON.parseObject(body, User.class);
-        String md5Pw = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
-        user.setPassword(md5Pw);
-        userService.save(user);
+        userService.register(user);
         return ResponseX.success(null);
     }
 
@@ -61,24 +69,11 @@ public class AuthController {
         String username = obj.getString("username");
         String password = obj.getString("password");
 
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",username);
-        User user = userService.getOne(queryWrapper);
-
-        if (Objects.isNull(user)) {
-            return ResponseX.fail("username not found");
+        try {
+            return ResponseX.success(userService.login(username, password));
+        } catch (BusinessException e) {
+            return ResponseX.fail(e.getMessage());
         }
-
-        String md5Pw = DigestUtils.md5DigestAsHex(password.getBytes());
-        if (!user.getPassword().equals(md5Pw)) {
-            return ResponseX.fail("incorrect password");
-        }
-        // construct session id
-        String sessionId = String.valueOf(System.currentTimeMillis()) + "_" + String.valueOf(user.getId());
-
-        StpUtil.login(sessionId);
-
-        return ResponseX.success(StpUtil.getTokenInfo());
     }
 
     /**
@@ -90,6 +85,53 @@ public class AuthController {
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
+        StpUtil.logout();
+        return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/reset", method = RequestMethod.POST)
+    public String passwordReset(@RequestBody String body) {
+
+        if (!StpUtil.isLogin()) {
+            return ResponseX.fail("please log in first");
+        }
+
+        JSONObject obj = JSONObject.parseObject(body);
+        String oldPassword = obj.getString("oldPw");
+        String newPassword = obj.getString("newPw");
+
+        try {
+            userService.passwordReset(oldPassword, newPassword);
+        } catch (BusinessException e) {
+            return ResponseX.fail(e.getMessage());
+        }
+
+        return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/registerStaff", method = RequestMethod.POST)
+    public String registerStaff(@RequestBody String body) {
+        // todo 用户名重复
+        Staff staff = JSON.parseObject(body, Staff.class);
+        staffService.register(staff);
+        return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/loginStaff", method = RequestMethod.POST)
+    public String loginStaff(@RequestBody String body) {
+        JSONObject obj = JSONObject.parseObject(body);
+        String username = obj.getString("username");
+        String password = obj.getString("password");
+
+        try {
+            return ResponseX.success(staffService.login(username, password));
+        } catch (BusinessException e) {
+            return ResponseX.fail(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/logoutStaff", method = RequestMethod.GET)
+    public String logoutStaff() {
         StpUtil.logout();
         return ResponseX.success(null);
     }
