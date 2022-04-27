@@ -2,6 +2,7 @@ package com.db.herviz.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * @Date: 2022/4/25 17:26
  */
 @Data
+@AllArgsConstructor
 @TableName("zcq_coupon_cust")
 public class CouponCust {
 

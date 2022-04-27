@@ -9,6 +9,7 @@ import com.db.herviz.service.*;
 import com.db.herviz.service.impl.CouponCustService;
 import com.db.herviz.service.impl.CustomerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -61,7 +62,7 @@ class HervizApplicationTests {
     @Test
     public void test() throws Exception{
 
-        log.info(couponService.getCouponByUserId(1).toString());
+        log.info(RandomStringUtils.randomAlphabetic(6).toUpperCase());
     }
 
 }

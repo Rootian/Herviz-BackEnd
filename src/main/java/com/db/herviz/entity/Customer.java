@@ -18,7 +18,7 @@ public class Customer {
     private Long id;
 
     @TableField("c_type")
-    private Boolean type;
+    private String type;
 
     private String firstName;
 
