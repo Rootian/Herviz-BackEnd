@@ -1,5 +1,6 @@
 package com.db.herviz.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.Data;
 @TableName("zcq_office")
 public class Office {
 
-    @TableId("ofc_id")
+    @TableId(value = "ofc_id", type = IdType.AUTO)
     private Long id;
 
     private String streetAddr;

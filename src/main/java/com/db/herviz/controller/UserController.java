@@ -55,4 +55,5 @@ public class UserController {
         Page<User> userList = userService.getUserList(keywords, page, limit);
         return ResponseX.page(userList.getRecords(), userList.getTotal());
     }
+
 }

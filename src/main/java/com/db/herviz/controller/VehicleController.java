@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.annotation.Retention;
 import java.util.*;
 
 /**
@@ -56,5 +57,40 @@ public class VehicleController {
     public String getVehicleList(String keywords, Integer page, Integer limit) {
         Page<Vehicle> resultList = vehicleService.getVehicleList(keywords, page, limit);
         return ResponseX.page(resultList.getRecords(), resultList.getTotal());
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String updateVehicle(@RequestBody String body) {
+        Vehicle vehicle = JSONObject.parseObject(body, Vehicle.class);
+        try {
+            vehicleService.updateById(vehicle);
+        } catch (Exception e) {
+            return ResponseX.fail("update vehicle fail");
+        }
+
+        return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public String deleteVehicle(Long id) {
+        try {
+            vehicleService.removeById(id);
+        } catch (Exception e) {
+            return ResponseX.fail("Delete Fail");
+        }
+
+        return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addVehicle(@RequestBody String body) {
+        Vehicle vehicle = JSONObject.parseObject(body, Vehicle.class);
+        try {
+            vehicleService.save(vehicle);
+        } catch (Exception e) {
+            return ResponseX.fail("add vehicle fail");
+        }
+
+        return ResponseX.success(null);
     }
 }

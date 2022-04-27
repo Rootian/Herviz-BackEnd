@@ -1,5 +1,6 @@
 package com.db.herviz.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.db.herviz.domain.OrderStatusEnum;
 import com.db.herviz.entity.RentalOrder;
@@ -19,7 +20,11 @@ public interface RentalOrderService extends IService<RentalOrder> {
 
     void saveOrder(RentalOrder order);
 
-    List<RentalOrder> listOrder(Long userId);
+    List<RentalOrder> listOrder();
 
     void setOrderStatus(Long orderId, OrderStatusEnum status);
+
+    void cancelOrder(Long id);
+
+    Page<RentalOrder> getOrderList(String keywords, Integer page, Integer limit);
 }

@@ -16,7 +16,7 @@ import java.io.Serializable;
 @TableName("zcq_vehicle_class")
 public class VehicleClass implements Serializable {
 
-    @TableId(value = "class_id")
+    @TableId(value = "class_id", type = IdType.AUTO)
     private Long id;
 
     @TableField("class_type")
