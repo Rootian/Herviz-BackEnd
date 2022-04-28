@@ -69,13 +69,13 @@ public class CouponController {
     @PostMapping("/addCouponToAccount")
     @ApiOperation(value = "用户添加优惠券")
     public String addCouponToAccount(int userId, String couponCode) {
-        boolean saveResult;
+        Coupon coupon;
         try {
-            saveResult = couponService.addCouponToAccount(userId, couponCode);
+            coupon = couponService.addCouponToAccount(userId, couponCode);
         } catch (BusinessException e){
             return ResponseX.fail(e.getMessage());
         }
-        return ResponseX.success(saveResult);
+        return ResponseX.success(coupon);
     }
 
 

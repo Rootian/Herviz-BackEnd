@@ -2,21 +2,16 @@ package com.db.herviz.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.db.herviz.domain.BusinessException;
 import com.db.herviz.domain.CacheFindList;
 import com.db.herviz.domain.OrderStatusEnum;
-import com.db.herviz.entity.Invoice;
-import com.db.herviz.entity.RentalOrder;
-import com.db.herviz.entity.User;
-import com.db.herviz.entity.Vehicle;
+import com.db.herviz.entity.*;
 import com.db.herviz.mapper.RentalOrderMapper;
 import com.db.herviz.redis.RedisUtil;
-import com.db.herviz.service.InvoiceService;
-import com.db.herviz.service.RentalOrderService;
-import com.db.herviz.service.VehicleClassService;
-import com.db.herviz.service.VehicleService;
+import com.db.herviz.service.*;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +38,12 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
 
     @Autowired
     private VehicleClassService classService;
+
+    @Autowired
+    private CouponService couponService;
+
+    @Autowired
+    private VehicleClassService vehicleClassService;
 
     @Override
     @CacheFindList
@@ -166,6 +167,29 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
         return pages;
     }
 
+    @Override
+    public void update(RentalOrder order) {
+        Double discountRate = 0d;
+        Invoice oldInvoice = invoiceService.getOne(Wrappers.<Invoice>lambdaQuery().eq(Invoice::getOrderId, order.getId()));
+        Double meterFee = vehicleClassService.getOne(Wrappers.<VehicleClass>lambdaQuery()
+                .eq(VehicleClass::getId, order.getClassId())).getFee();
+        if (order.getCouponId() != null) {
+            discountRate = couponService.getById(order.getCouponId()).getDiscount();
+        }
+        long rentDays = (order.getDDate().getTime() - order.getPDate().getTime()) / (24 * 100 * 3600) + 1;
+        long exceedMiles = order.getEOdometer() - order.getSOdometer() -  rentDays * order.getOdometerLimit();
+        if (exceedMiles > 0) {
+            oldInvoice.setAmount(oldInvoice.getAmount() + exceedMiles * meterFee * (1 - discountRate));
+        }
+        try {
+            updateById(order);
+            invoiceService.updateById(oldInvoice);
+        } catch (BusinessException e) {
+            throw new BusinessException("Update failed");
+        }
+
+    }
+
     /**
      * @Description assign vehicle of specific class
      * @Author Rootian
@@ -197,9 +221,13 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
      * @return java.lang.Double
      */
     private Double calOrderAmount(RentalOrder order) {
+        Double discountRate = 0d;
         Double rentalRate = classService.getRentalRate(order.getClassId());
         long numOfRent = (order.getDDate().getTime() - order.getPDate().getTime()) / (24 * 100 * 3600);
-        return rentalRate * numOfRent;
+        if (order.getCouponId() != null) {
+            discountRate = couponService.getById(order.getCouponId()).getDiscount();
+        }
+        return rentalRate * numOfRent * (1 - discountRate);
 
     }
 
