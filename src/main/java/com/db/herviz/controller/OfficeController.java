@@ -53,4 +53,9 @@ public class OfficeController {
         }
         return ResponseX.success(null);
     }
+
+    @RequestMapping(value = "/listMenu", method = RequestMethod.GET)
+    public String getOfficeMenu() {
+        return ResponseX.success(officeService.list());
+    }
 }
