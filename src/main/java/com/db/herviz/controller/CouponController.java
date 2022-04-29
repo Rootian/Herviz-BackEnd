@@ -1,7 +1,10 @@
 package com.db.herviz.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.db.herviz.domain.BusinessException;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Coupon;
@@ -52,11 +55,30 @@ public class CouponController {
         return ResponseX.success(null);
     }
 
+    @PostMapping("/update")
+    public String updateCoupon(@RequestBody String body) {
+        Coupon coupon = JSONObject.parseObject(body, Coupon.class);
+        try {
+            couponService.updateById(coupon);
+        } catch (Exception e) {
+            ResponseX.fail(e.getMessage());
+        }
+        return ResponseX.success(null);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String getOfficeList(String keywords, Integer page, Integer limit) {
+        Page<Coupon> officeList = couponService.getCouponList(keywords, page, limit);
+        return ResponseX.page(officeList.getRecords(), officeList.getTotal());
+    }
+
     @GetMapping("/getByUserId")
     @ApiOperation(value = "查询用户优惠券")
-    public String getCouponByUserId(int userId) {
+    public String getCouponByUserId() {
         List<Coupon> couponByUserId;
         try {
+            String sessionId = StpUtil.getLoginIdAsString();
+            Long userId = Long.valueOf(sessionId.split("_")[1]);
             couponByUserId = couponService.getCouponByUserId(userId);
         } catch (BusinessException e) {
             return ResponseX.fail(e.getMessage());
@@ -68,8 +90,10 @@ public class CouponController {
 
     @PostMapping("/addCouponToAccount")
     @ApiOperation(value = "用户添加优惠券")
-    public String addCouponToAccount(int userId, String couponCode) {
+    public String addCouponToAccount(String couponCode) {
         boolean saveResult;
+        String sessionId = StpUtil.getLoginIdAsString();
+        Long userId = Long.valueOf(sessionId.split("_")[1]);
         try {
             saveResult = couponService.addCouponToAccount(userId, couponCode);
         } catch (BusinessException e){

@@ -1,5 +1,6 @@
 package com.db.herviz.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Coupon;
@@ -13,14 +14,14 @@ import java.util.List;
  */
 public interface CouponService extends IService<Coupon> {
 
-    List<Coupon> getCouponByUserId (int userId);
+    List<Coupon> getCouponByUserId (Long userId);
 
     /**
      * add coupon to account
      * @param userId
      * @param couponCode
      */
-    boolean addCouponToAccount (int userId, String couponCode);
+    boolean addCouponToAccount (Long userId, String couponCode);
 
     /**
      * check couponCode validation
@@ -29,4 +30,5 @@ public interface CouponService extends IService<Coupon> {
      */
     Coupon checkCouponValidation (String couponCode);
 
+    Page<Coupon> getCouponList(String keywords, Integer page, Integer limit);
 }

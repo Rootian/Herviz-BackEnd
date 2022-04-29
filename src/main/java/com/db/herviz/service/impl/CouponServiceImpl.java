@@ -1,8 +1,10 @@
 package com.db.herviz.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.BeanUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.db.herviz.domain.BusinessException;
 import com.db.herviz.domain.ResponseX;
@@ -13,6 +15,7 @@ import com.db.herviz.mapper.CouponMapper;
 import com.db.herviz.service.CouponService;
 import com.db.herviz.service.CustomerService;
 import com.fasterxml.jackson.databind.util.BeanUtil;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,7 +39,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
 
 
     @Override
-    public List<Coupon> getCouponByUserId(int userId) {
+    public List<Coupon> getCouponByUserId(Long userId) {
         Customer customer = customerService.getCustomerByUId(userId);
         List<CouponCust> cclist = couponCustService.list(Wrappers.<CouponCust>lambdaQuery()
                 .eq(CouponCust::getCId, customer.getId()));
@@ -48,7 +51,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
     }
 
     @Override
-    public boolean addCouponToAccount(int userId, String couponCode) throws BusinessException {
+    public boolean addCouponToAccount(Long userId, String couponCode) throws BusinessException {
         Customer customer = customerService.getCustomerByUId(userId);
         Coupon couponToAdd = checkCouponValidation(couponCode);
         List<Coupon> couponList = getCouponByUserId(userId);
@@ -74,5 +77,16 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
             throw new BusinessException("Coupon has expired");
         }
         return coupon;
+    }
+
+    @Override
+    public Page<Coupon> getCouponList(String keywords, Integer page, Integer limit) {
+        QueryWrapper<Coupon> wrapper = new QueryWrapper<>();
+        if (Strings.isNotEmpty(keywords)) {
+            // search keywords
+        }
+        Page<Coupon> pages = new Page<>(page, limit);
+        baseMapper.selectPage(pages, wrapper);
+        return pages;
     }
 }

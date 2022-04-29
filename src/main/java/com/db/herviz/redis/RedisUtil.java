@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description:
@@ -29,6 +30,7 @@ public class RedisUtil {
                 }
             }
             redisTemplate.opsForList().rightPushAll(key, objList);
+            redisTemplate.expire(key, 1, TimeUnit.MINUTES);
             result = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +53,7 @@ public class RedisUtil {
     public boolean set(String key, Object value) {
         boolean result = false;
         try {
-            redisTemplate.opsForValue().set(key, value);
+            redisTemplate.opsForValue().set(key, value, 1, TimeUnit.MINUTES);
             result = true;
         } catch (Exception e) {
             e.printStackTrace();

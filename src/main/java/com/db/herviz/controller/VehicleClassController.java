@@ -64,5 +64,10 @@ public class VehicleClassController {
         return ResponseX.success(null);
     }
 
+    @RequestMapping(value = "/listMenu", method = RequestMethod.GET)
+    public String getClassMenu() {
+        return ResponseX.success(classService.list());
+    }
+
 
 }
