@@ -40,6 +40,9 @@ class HervizApplicationTests {
     @Resource
     private CouponService couponService;
 
+    @Resource
+    private ChartService chartService;
+
     @Test
     void contextLoads() {
         LambdaQueryWrapper<Customer> qr = new LambdaQueryWrapper<>();
@@ -62,7 +65,7 @@ class HervizApplicationTests {
     @Test
     public void test() throws Exception{
 
-        log.info(RandomStringUtils.randomAlphabetic(6).toUpperCase());
+        chartService.getLastYearRevenue();
     }
 
 }
