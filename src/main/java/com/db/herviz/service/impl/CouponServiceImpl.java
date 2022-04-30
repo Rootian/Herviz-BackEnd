@@ -47,11 +47,14 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
         for (CouponCust couponCust : cclist) {
             ids.add(couponCust.getCouponId());
         }
-        return listByIds(ids);
+        List<Coupon> couponResult = listByIds(ids);
+        //remove the expired coupons
+        couponResult.removeIf(coupon -> !(new Date().after(coupon.getSDate()) && new Date().before(coupon.getEDate())));
+        return couponResult;
     }
 
     @Override
-    public boolean addCouponToAccount(Long userId, String couponCode) throws BusinessException {
+    public Coupon addCouponToAccount(Long userId, String couponCode) throws BusinessException {
         Customer customer = customerService.getCustomerByUId(userId);
         Coupon couponToAdd = checkCouponValidation(couponCode);
         List<Coupon> couponList = getCouponByUserId(userId);
@@ -63,7 +66,10 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
             }
         }
         CouponCust couponCust = new CouponCust(customer.getId(),couponToAdd.getId(), customer.getType());
-        return couponCustService.save(couponCust);
+        if (!couponCustService.save(couponCust)) {
+            throw new BusinessException("Save coupon failed");
+        }
+        return couponToAdd;
     }
 
     @Override

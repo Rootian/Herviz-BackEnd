@@ -21,7 +21,7 @@ public interface CouponService extends IService<Coupon> {
      * @param userId
      * @param couponCode
      */
-    boolean addCouponToAccount (Long userId, String couponCode);
+    Coupon addCouponToAccount (Long userId, String couponCode);
 
     /**
      * check couponCode validation

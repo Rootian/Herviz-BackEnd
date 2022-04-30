@@ -27,4 +27,6 @@ public interface RentalOrderService extends IService<RentalOrder> {
     void cancelOrder(Long id);
 
     Page<RentalOrder> getOrderList(String keywords, Integer page, Integer limit);
+
+    void update(RentalOrder order);
 }

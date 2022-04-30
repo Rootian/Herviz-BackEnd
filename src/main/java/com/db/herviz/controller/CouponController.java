@@ -91,7 +91,7 @@ public class CouponController {
     @PostMapping("/addCouponToAccount")
     @ApiOperation(value = "用户添加优惠券")
     public String addCouponToAccount(String couponCode) {
-        boolean saveResult;
+        Coupon saveResult;
         String sessionId = StpUtil.getLoginIdAsString();
         Long userId = Long.valueOf(sessionId.split("_")[1]);
         try {

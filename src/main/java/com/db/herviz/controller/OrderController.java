@@ -63,7 +63,7 @@ public class OrderController {
     public String updateOrder(@RequestBody String body) {
         RentalOrder order = JSONObject.parseObject(body, RentalOrder.class);
         try {
-            orderService.updateById(order);
+            orderService.update(order);
         } catch (Exception e) {
             return ResponseX.fail("update order fail");
         }
