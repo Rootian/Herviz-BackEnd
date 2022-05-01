@@ -51,4 +51,6 @@ public class RentalOrder {
 
     private OrderStatusEnum status;
 
+    private Date createTime;
+
 }

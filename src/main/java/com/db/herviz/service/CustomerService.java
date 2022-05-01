@@ -10,5 +10,5 @@ import org.springframework.stereotype.Service;
  */
 public interface CustomerService extends IService<Customer> {
 
-    public Customer getCustomerByUId (int uId);
+    public Customer getCustomerByUId (Long uId);
 }

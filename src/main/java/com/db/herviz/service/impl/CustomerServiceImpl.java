@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> implements CustomerService {
     @Override
-    public Customer getCustomerByUId(int uId) {
+    public Customer getCustomerByUId(Long uId) {
         return getOne(Wrappers.<Customer>lambdaQuery().eq(Customer::getUId, uId));
     }
 }
