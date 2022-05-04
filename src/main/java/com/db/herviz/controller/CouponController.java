@@ -79,6 +79,7 @@ public class CouponController {
         try {
             String sessionId = StpUtil.getLoginIdAsString();
             Long userId = Long.valueOf(sessionId.split("_")[1]);
+
             couponByUserId = couponService.getCouponByUserId(userId);
         } catch (BusinessException e) {
             return ResponseX.fail(e.getMessage());

@@ -51,4 +51,14 @@ public class ChartServiceImpl implements ChartService {
 
         return res.toJSONString();
     }
+
+    @Override
+    public Double getAllRevenue() {
+        double sum = 0;
+        List<Payment> payList = paymentService.list();
+        for (Payment pay : payList) {
+            sum += pay.getAmount();
+        }
+        return sum;
+    }
 }
