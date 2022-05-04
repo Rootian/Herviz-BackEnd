@@ -48,11 +48,12 @@ public class SaTokenConfig {
                     // ---------- 设置跨域响应头 ----------
                     SaHolder.getResponse()
                             // 允许指定域访问跨域资源
-                            .setHeader("Access-Control-Allow-Origin", "*")
+                            .setHeader("Access-Control-Allow-Origin", "http:localhost")
                             // 允许所有请求方式
                             .setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
                             // 有效时间
                             .setHeader("Access-Control-Max-Age", "3600")
+                            .setHeader("Access-Control-Allow-Credentials", "true")
                             // 允许的header参数
                             .setHeader("Access-Control-Allow-Headers", "*");
 

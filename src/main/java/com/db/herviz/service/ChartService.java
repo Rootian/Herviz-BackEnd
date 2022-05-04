@@ -7,4 +7,6 @@ package com.db.herviz.service;
 public interface ChartService {
 
     public String getLastYearRevenue();
+
+    Double getAllRevenue();
 }

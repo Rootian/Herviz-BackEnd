@@ -1,5 +1,7 @@
 package com.db.herviz.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import com.db.herviz.domain.ResponseX;
 import com.db.herviz.service.ChartService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,13 @@ public class ChartController {
     private ChartService chartService;
 
     @GetMapping("/lastYearRevenue")
+    @SaCheckLogin
     public String getLastYearRevenue() {
         return chartService.getLastYearRevenue();
+    }
+
+    @GetMapping("/allRevenue")
+    public String getAllRevenue() {
+        return ResponseX.success(chartService.getAllRevenue());
     }
 }
