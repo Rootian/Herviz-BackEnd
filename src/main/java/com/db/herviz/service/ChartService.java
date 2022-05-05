@@ -6,5 +6,9 @@ package com.db.herviz.service;
  */
 public interface ChartService {
 
-    public String getLastYearRevenue();
+    public String getLastYearRevenueByMonth();
+
+    String getLastYearOrderNumByMonth();
+
+    String getLastYearRevenueByOffice();
 }

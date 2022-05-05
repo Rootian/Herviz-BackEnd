@@ -1,21 +1,18 @@
 package com.db.herviz;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.db.herviz.entity.*;
+import com.db.herviz.mapper.ChartMapper;
 import com.db.herviz.service.*;
-import com.db.herviz.service.impl.CouponCustService;
+import com.db.herviz.service.CouponCustService;
 import com.db.herviz.service.impl.CustomerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Map;
 
 
 @SpringBootTest(classes = HervizApplication.class)
@@ -43,6 +40,9 @@ class HervizApplicationTests {
     @Resource
     private ChartService chartService;
 
+    @Resource
+    private ChartMapper chartMapper;
+
     @Test
     void contextLoads() {
         LambdaQueryWrapper<Customer> qr = new LambdaQueryWrapper<>();
@@ -65,7 +65,8 @@ class HervizApplicationTests {
     @Test
     public void test() throws Exception{
 
-        chartService.getLastYearRevenue();
+        Map<String, Double> lastYearRevenueByOffice = chartMapper.getLastYearRevenueByOffice();
+        System.out.println(lastYearRevenueByOffice);
     }
 
 }

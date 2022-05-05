@@ -1,4 +1,4 @@
-package com.db.herviz.service.impl;
+package com.db.herviz.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.db.herviz.entity.CouponCust;

@@ -20,8 +20,18 @@ public class ChartController {
     @Resource
     private ChartService chartService;
 
-    @GetMapping("/lastYearRevenue")
+    @GetMapping("/lastYearRevenueByMonth")
     public String getLastYearRevenue() {
-        return chartService.getLastYearRevenue();
+        return chartService.getLastYearRevenueByMonth();
+    }
+
+    @GetMapping("/lastYearOrderNumByMonth")
+    public String getLastYearOrderNumByMonth() {
+        return chartService.getLastYearOrderNumByMonth();
+    }
+
+    @GetMapping("/lastYearRevenueByOffice")
+    public String getLastYearRevenueByOffice() {
+        return chartService.getLastYearRevenueByOffice();
     }
 }

@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy(exposeProxy=true,proxyTargetClass=true)
+@MapperScan(basePackages = "com.db.herviz.mapper")
 public class HervizApplication {
 
     @Resource
