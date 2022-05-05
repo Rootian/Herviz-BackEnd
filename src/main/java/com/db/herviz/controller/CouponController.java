@@ -89,7 +89,7 @@ public class CouponController {
 
     }
 
-    @PostMapping("/addCouponToAccount")
+    @GetMapping("/addCouponToAccount")
     @ApiOperation(value = "用户添加优惠券")
     public String addCouponToAccount(String couponCode) {
         Coupon saveResult;

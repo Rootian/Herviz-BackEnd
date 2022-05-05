@@ -19,6 +19,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,9 +48,12 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
         for (CouponCust couponCust : cclist) {
             ids.add(couponCust.getCouponId());
         }
-        List<Coupon> couponResult = listByIds(ids);
-        //remove the expired coupons
-        couponResult.removeIf(coupon -> !(new Date().after(coupon.getSDate()) && new Date().before(coupon.getEDate())));
+        List<Coupon> couponResult = new ArrayList<>();
+        if (!ids.isEmpty()) {
+            couponResult = listByIds(ids);
+            //remove the expired coupons
+            couponResult.removeIf(coupon -> !(new Date().after(coupon.getSDate()) && new Date().before(coupon.getEDate())));
+        }
         return couponResult;
     }
 
