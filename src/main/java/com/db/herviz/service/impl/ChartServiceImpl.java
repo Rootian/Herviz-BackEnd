@@ -8,6 +8,7 @@ import com.db.herviz.domain.OrderStatusEnum;
 import com.db.herviz.entity.Invoice;
 import com.db.herviz.entity.Payment;
 import com.db.herviz.entity.RentalOrder;
+import com.db.herviz.mapper.ChartMapper;
 import com.db.herviz.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,13 @@ public class ChartServiceImpl implements ChartService {
     private RentalOrderService rentalOrderService;
 
     @Resource
-    private OfficeService officeService;
+    private VehicleService vehicleService;
 
     @Resource
     private InvoiceService invoiceService;
+
+    @Resource
+    private ChartMapper chartMapper;
 
     @Override
     public String getLastYearRevenueByMonth() {
@@ -88,27 +92,29 @@ public class ChartServiceImpl implements ChartService {
 
     @Override
     public String getLastYearRevenueByOffice() {
-        TreeMap<String, Double> officeRevenueMap = new TreeMap<>();
-        List<Long> orderIdList = new ArrayList<>();
         LocalDate startDate = LocalDate.now().minusYears(1).withDayOfMonth(1);
-        // List order in last one year
-        List<RentalOrder> orderList = rentalOrderService.list(Wrappers.<RentalOrder>lambdaQuery()
-                .between(RentalOrder::getCreateTime, startDate, startDate.plusYears(1))
-                .eq(RentalOrder::getStatus, OrderStatusEnum.COMPLETED));
-        // Order Id list for listing according invoices
-        orderList.forEach(order -> {
-            orderIdList.add(order.getId());
-        });
-        List<Invoice> invoiceList = invoiceService.list(Wrappers.<Invoice>lambdaQuery().in(Invoice::getOrderId, orderIdList));
-        // Map key: orderId value: order total
-        HashMap<Long, Double> orderTotalMap = new HashMap<>();
-        invoiceList.forEach(invoice -> {
-            orderTotalMap.put(invoice.getOrderId(), invoice.getAmount());
-        });
-        orderList.forEach(order -> {
+        List<Map<String, Double>> officeRevenueList =
+                chartMapper.getLastYearRevenueByOffice(startDate, startDate.plusYears(1), OrderStatusEnum.COMPLETED);
+        JSONObject res = new JSONObject();
+        res.put("data", officeRevenueList);
+        return res.toJSONString();
+    }
 
-        });
-        log.info(orderTotalMap.toString());
-        return null;
+    @Override
+    public String getOrderNumByVehicleClass() {
+        LocalDate startDate = LocalDate.now().minusYears(1).withDayOfMonth(1);
+        List<Map<String, String>> officeRevenueList =
+                chartMapper.getOrderNumByVehicleClass(startDate, startDate.plusYears(1), OrderStatusEnum.COMPLETED);
+        JSONObject res = new JSONObject();
+        res.put("data", officeRevenueList);
+        return res.toJSONString();
+    }
+
+    @Override
+    public String getPercentageOfRentAndAllCar() {
+        double rentCarNumCurrently = (double) chartMapper.getRentCarNumCurrently();
+        int allCarCount = vehicleService.count();
+        double res = (rentCarNumCurrently / allCarCount);
+        return String.format("%.2f", res);
     }
 }

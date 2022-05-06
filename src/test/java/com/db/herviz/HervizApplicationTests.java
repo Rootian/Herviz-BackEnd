@@ -2,6 +2,7 @@ package com.db.herviz;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.db.herviz.domain.OrderStatusEnum;
 import com.db.herviz.entity.*;
 import com.db.herviz.mapper.ChartMapper;
 import com.db.herviz.service.*;
@@ -12,6 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -65,8 +69,26 @@ class HervizApplicationTests {
     @Test
     public void test() throws Exception{
 
-        Map<String, Double> lastYearRevenueByOffice = chartMapper.getLastYearRevenueByOffice();
+        //List<Map<String, Double>> lastYearRevenueByOffice = chartMapper.getLastYearRevenueByOffice();
+        //System.out.println(lastYearRevenueByOffice);
+        //String test = chartMapper.getTest(1l);
+        //System.out.println(test);
+        String lastYearRevenueByOffice = chartService.getLastYearRevenueByOffice();
         System.out.println(lastYearRevenueByOffice);
+    }
+
+    @Test
+    public void test1() throws Exception{
+        List<Long> orderIdList = new ArrayList<>();
+        LocalDate startDate = LocalDate.now().minusYears(1).withDayOfMonth(1);
+        List<Map<String, String>> test = chartMapper.getOrderNumByVehicleClass(startDate, startDate.plusYears(1), OrderStatusEnum.COMPLETED);
+        System.out.println(test);
+    }
+
+    @Test
+    public void test2() throws Exception{
+        Integer rentCarNumCurrently = chartMapper.getRentCarNumCurrently();
+        System.out.println(rentCarNumCurrently);
     }
 
 }

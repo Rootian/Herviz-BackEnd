@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.db.herviz.mapper.ChartMapper">
+
+    <select id="getLastYearRevenueByOffice" resultType="hashmap">
+        select office.city as name, sum(invoice.amount) as value from
+        (select * from zcq_rental_order where create_time between #{startDate} and #{endDate} and status = #{status}) rentalOrder
+        left join zcq_invoice invoice
+        on rentalOrder.order_id = invoice.order_id
+        left join zcq_office office
+        on rentalOrder.pickup_loc = office.ofc_id
+        group by rentalOrder.pickup_loc
+    </select>
+
+    <select id="getOrderNumByVehicleClass" resultType="hashmap">
+        select c.class_type as name,  count(r.class_id) as value from
+        (select * from zcq_rental_order where create_time between #{startDate} and #{endDate} and status = #{status}) r
+        left join zcq_vehicle_class c
+        on r.class_id = c.class_id
+        group by r.class_id
+    </select>
+
+    <select id="getRentCarNumCurrently" resultType="integer">
+        select count(*) from zcq_rental_order
+        where d_date > sysdate() and p_date &lt; sysdate()
+    </select>
+
+    <select id="getTest" resultType="string">
+        select * from zcq_rental_order where create_time between #{startDate} and #{endDate}
+    </select>
+
+</mapper>

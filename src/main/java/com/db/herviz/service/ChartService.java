@@ -11,4 +11,8 @@ public interface ChartService {
     String getLastYearOrderNumByMonth();
 
     String getLastYearRevenueByOffice();
+
+    String getOrderNumByVehicleClass();
+
+    String getPercentageOfRentAndAllCar();
 }
