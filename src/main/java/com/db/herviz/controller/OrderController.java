@@ -41,7 +41,7 @@ public class OrderController {
         } catch (BusinessException e) {
             return ResponseX.fail(e.getMessage());
         }
-        return ResponseX.success(null);
+        return ResponseX.success(obj);
     }
 
     /**
