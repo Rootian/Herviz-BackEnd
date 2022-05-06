@@ -112,6 +112,9 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
         order.setVin(vehicleId);
         order.setStatus(OrderStatusEnum.CREATED);
         order.setCreateTime(new Date());
+        String sessionId = StpUtil.getLoginIdAsString();
+        Long uId = Long.valueOf(sessionId.split("_")[1]);
+        order.setUId(uId);
 
         // save order
         if (!save(order))
