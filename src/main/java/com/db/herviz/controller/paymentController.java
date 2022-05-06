@@ -2,11 +2,14 @@ package com.db.herviz.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.db.herviz.domain.BusinessException;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Invoice;
+import com.db.herviz.entity.RentalOrder;
 import com.db.herviz.service.InvoiceService;
 import com.db.herviz.service.PaymentService;
+import com.db.herviz.service.RentalOrderService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,11 +35,15 @@ public class paymentController {
     @Autowired
     private InvoiceService invoiceService;
 
+    @Autowired
+    private RentalOrderService orderService;
+
     @RequestMapping(value = "/pay", method = RequestMethod.POST)
     public String payInvoice(@RequestBody String body) {
         JSONObject obj = JSONObject.parseObject(body);
-        Long invoiceId = obj.getLong("invoiceId");
-        Invoice invoice = invoiceService.getById(invoiceId);
+        Long orderId = obj.getLong("orderId");
+        RentalOrder order = orderService.getById(orderId);
+        Invoice invoice = invoiceService.getOne(Wrappers.<Invoice>lambdaQuery().eq(Invoice::getOrderId, order.getId()));
         JSONArray payList = obj.getJSONArray("payList");
         try {
             paymentService.payInvoice(invoice, payList);

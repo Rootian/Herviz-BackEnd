@@ -1,5 +1,6 @@
 package com.db.herviz.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -42,6 +43,7 @@ public class UserController {
      * @return java.lang.String
      */
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @SaCheckLogin
     public String saveProfile(@RequestBody String body) {
         Customer customer = JSONObject.parseObject(body, Customer.class);
 

@@ -117,4 +117,14 @@ public class ChartServiceImpl implements ChartService {
         double res = (rentCarNumCurrently / allCarCount);
         return String.format("%.2f", res);
     }
+
+    @Override
+    public Double getAllRevenue() {
+        double sum = 0;
+        List<Payment> payList = paymentService.list();
+        for (Payment pay : payList) {
+            sum += pay.getAmount();
+        }
+        return sum;
+    }
 }

@@ -1,5 +1,6 @@
 package com.db.herviz.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,6 +33,7 @@ public class OrderController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ApiOperation(value = "saveOrder", notes = "")
+    @SaCheckLogin
     public String saveOrder(@RequestBody String body) {
         RentalOrder obj = JSONObject.parseObject(body, RentalOrder.class);
         try {
@@ -39,7 +41,7 @@ public class OrderController {
         } catch (BusinessException e) {
             return ResponseX.fail(e.getMessage());
         }
-        return ResponseX.success(null);
+        return ResponseX.success(obj);
     }
 
     /**
@@ -50,6 +52,7 @@ public class OrderController {
      * @return java.lang.String
      */
     @RequestMapping(value = "/listForUser", method = RequestMethod.GET)
+    @SaCheckLogin
     public String listOrderForUser() {
         if (!StpUtil.isLogin()) {
             return ResponseX.fail("please log in first");

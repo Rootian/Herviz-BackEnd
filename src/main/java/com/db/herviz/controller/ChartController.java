@@ -1,5 +1,7 @@
 package com.db.herviz.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import com.db.herviz.domain.ResponseX;
 import com.db.herviz.service.ChartService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,5 +50,10 @@ public class ChartController {
     @ApiOperation("获取目前系统已租出车辆")
     public String getPercentageOfRentAndAllCar() {
         return chartService.getPercentageOfRentAndAllCar();
+    }
+
+    @GetMapping("/allRevenue")
+    public String getAllRevenue() {
+        return ResponseX.success(chartService.getAllRevenue());
     }
 }

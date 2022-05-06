@@ -79,6 +79,7 @@ public class CouponController {
         try {
             String sessionId = StpUtil.getLoginIdAsString();
             Long userId = Long.valueOf(sessionId.split("_")[1]);
+
             couponByUserId = couponService.getCouponByUserId(userId);
         } catch (BusinessException e) {
             return ResponseX.fail(e.getMessage());
@@ -88,7 +89,7 @@ public class CouponController {
 
     }
 
-    @PostMapping("/addCouponToAccount")
+    @GetMapping("/addCouponToAccount")
     @ApiOperation(value = "用户添加优惠券")
     public String addCouponToAccount(String couponCode) {
         Coupon saveResult;

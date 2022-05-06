@@ -39,20 +39,18 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
     @Override
     public List<Coupon> getCouponByUserId(Long userId) {
         Customer customer = customerService.getCustomerByUId(userId);
-        List<Coupon> couponResult = new ArrayList<>();
         List<CouponCust> cclist = couponCustService.list(Wrappers.<CouponCust>lambdaQuery()
                 .eq(CouponCust::getCId, customer.getId()));
         List<Long> ids = new LinkedList<>();
         for (CouponCust couponCust : cclist) {
             ids.add(couponCust.getCouponId());
         }
-
+        List<Coupon> couponResult = new ArrayList<>();
         if (!ids.isEmpty()) {
             couponResult = listByIds(ids);
             //remove the expired coupons
             couponResult.removeIf(coupon -> !(new Date().after(coupon.getSDate()) && new Date().before(coupon.getEDate())));
         }
-
         return couponResult;
     }
 

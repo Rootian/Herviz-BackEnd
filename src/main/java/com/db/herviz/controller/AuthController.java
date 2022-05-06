@@ -39,6 +39,9 @@ public class AuthController {
     @Autowired
     private StaffService staffService;
 
+    @Autowired
+    private CustomerService customerService;
+
 
     /**
      * @Description User Register Request
@@ -52,7 +55,10 @@ public class AuthController {
         // todo 用户名重复
         User user = JSON.parseObject(body, User.class);
         userService.register(user);
-        return ResponseX.success(null);
+        Customer customer = new Customer();
+        customer.setUId(user.getId());
+        customerService.save(customer);
+        return ResponseX.success(customer);
     }
 
 

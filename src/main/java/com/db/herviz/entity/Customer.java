@@ -40,5 +40,13 @@ public class Customer {
 
     private Long uId;
 
+    private Long dln;
+
+    private String insrcCompany;
+
+    private Long insrcNo;
+
+    private Long corpId;
+
 
 }

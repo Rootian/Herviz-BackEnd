@@ -13,8 +13,6 @@ import javax.annotation.Resource;
 @EnableAspectJAutoProxy(exposeProxy=true,proxyTargetClass=true)
 public class HervizApplication {
 
-    @Resource
-    private CustomerService customerService;
 
 
     public static void main(String[] args) {
