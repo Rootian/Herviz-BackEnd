@@ -56,4 +56,7 @@ public class ChartController {
     public String getAllRevenue() {
         return ResponseX.success(chartService.getAllRevenue());
     }
+
+    @GetMapping("/allOrders")
+    public String getAllOrders() { return ResponseX.success(chartService.getAllOrders());}
 }

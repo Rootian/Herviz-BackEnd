@@ -83,6 +83,8 @@ public class RentalOrderServiceImpl extends ServiceImpl<RentalOrderMapper, Renta
         List<RentalOrder> orderList = list(wrapper);
 
         for (RentalOrder order : orderList) {
+            if (order.getStatus() == OrderStatusEnum.CANCELED)
+                continue;
             if (Math.max(order.getPDate().getTime(), pickUpDate) < Math.min(order.getDDate().getTime(), dropDate)) {
                 return false;
             }

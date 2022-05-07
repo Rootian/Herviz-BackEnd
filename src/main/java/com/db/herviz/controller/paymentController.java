@@ -42,8 +42,7 @@ public class paymentController {
     public String payInvoice(@RequestBody String body) {
         JSONObject obj = JSONObject.parseObject(body);
         Long orderId = obj.getLong("orderId");
-        RentalOrder order = orderService.getById(orderId);
-        Invoice invoice = invoiceService.getOne(Wrappers.<Invoice>lambdaQuery().eq(Invoice::getOrderId, order.getId()));
+        Invoice invoice = invoiceService.getOne(Wrappers.<Invoice>lambdaQuery().eq(Invoice::getOrderId, orderId));
         JSONArray payList = obj.getJSONArray("payList");
         try {
             paymentService.payInvoice(invoice, payList);

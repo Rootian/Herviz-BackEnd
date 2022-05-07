@@ -38,7 +38,7 @@ public class CouponController {
     private CustomerService customerService;
 
     @PostMapping("/add")
-    @ApiOperation(value = "创建优惠券", notes = "{\n" +
+    @ApiOperation(value = "Create Coupon", notes = "{\n" +
             "    \"sDate\": \"2022-05-25\",\n" +
             "    \"eDate\": \"2022-06-26\",\n" +
             "    \"discount\": \"0.35\"\n" +
