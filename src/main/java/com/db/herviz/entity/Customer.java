@@ -30,8 +30,6 @@ public class Customer {
 
     private String address;
 
-    private String country;
-
     private String state;
 
     private String city;

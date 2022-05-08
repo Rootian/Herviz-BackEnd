@@ -11,10 +11,7 @@ import com.db.herviz.service.CustomerService;
 import com.db.herviz.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,14 +39,21 @@ public class UserController {
      * @param: profile json parameters
      * @return java.lang.String
      */
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveProfile", method = RequestMethod.POST)
     @SaCheckLogin
     public String saveProfile(@RequestBody String body) {
         Customer customer = JSONObject.parseObject(body, Customer.class);
-
-
-        customerService.save(customer);
+        customerService.updateById(customer);
         return ResponseX.success(null);
+    }
+
+    @GetMapping("/getProfile")
+    public String getUserProfile() {
+        String sessionId = StpUtil.getLoginIdAsString();
+        Long uId = Long.valueOf(sessionId.split("_")[1]);
+
+        Customer customer = customerService.getCustomerByUId(uId);
+        return ResponseX.success(customer);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
