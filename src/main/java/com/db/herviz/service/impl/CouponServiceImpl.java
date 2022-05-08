@@ -49,8 +49,8 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
         if (!ids.isEmpty()) {
             couponResult = listByIds(ids);
             //remove the expired coupons
-            couponResult.removeIf(coupon -> !(coupon.getSDate() != null && coupon.getEDate() != null &&
-                    new Date().after(coupon.getSDate()) && new Date().before(coupon.getEDate())));
+            couponResult.removeIf(coupon -> coupon.getSDate() != null && coupon.getEDate() != null &&
+                    !(new Date().after(coupon.getSDate()) && new Date().before(coupon.getEDate())));
         }
         return couponResult;
     }
@@ -81,8 +81,8 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon>
             throw new BusinessException("Coupon does not exist");
         }
 
-        if (!(coupon.getSDate() != null && coupon.getEDate() != null &&
-                new Date().after(coupon.getSDate()) && new Date().before(coupon.getEDate()))) {
+        if (coupon.getSDate() != null && coupon.getEDate() != null &&
+                !(new Date().after(coupon.getSDate()) && new Date().before(coupon.getEDate()))) {
             throw new BusinessException("Coupon has expired");
         }
         return coupon;
