@@ -17,4 +17,6 @@ public interface ChartService {
     String getPercentageOfRentAndAllCar();
 
     Double getAllRevenue();
+
+    Integer getAllOrders();
 }

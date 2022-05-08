@@ -3,6 +3,7 @@ package com.db.herviz.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Customer;
@@ -11,10 +12,7 @@ import com.db.herviz.service.CustomerService;
 import com.db.herviz.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,14 +40,29 @@ public class UserController {
      * @param: profile json parameters
      * @return java.lang.String
      */
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveProfile", method = RequestMethod.POST)
     @SaCheckLogin
     public String saveProfile(@RequestBody String body) {
         Customer customer = JSONObject.parseObject(body, Customer.class);
-
-
-        customerService.save(customer);
+        String sessionId = StpUtil.getLoginIdAsString();
+        Long uId = Long.valueOf(sessionId.split("_")[1]);
+        QueryWrapper wrapper = new QueryWrapper();
+        try {
+            wrapper.eq("u_id", uId);
+            customerService.update(customer, wrapper);
+        } catch (Exception e) {
+            return ResponseX.fail("update fail");
+        }
         return ResponseX.success(null);
+    }
+
+    @GetMapping("/getProfile")
+    public String getUserProfile() {
+        String sessionId = StpUtil.getLoginIdAsString();
+        Long uId = Long.valueOf(sessionId.split("_")[1]);
+
+        Customer customer = customerService.getCustomerByUId(uId);
+        return ResponseX.success(customer);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

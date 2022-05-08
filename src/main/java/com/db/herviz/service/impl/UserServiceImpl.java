@@ -2,6 +2,7 @@ package com.db.herviz.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,7 +30,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public SaTokenInfo login(String username, String password) throws BusinessException {
+    public JSONObject login(String username, String password) throws BusinessException {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username);
         User user = getOne(queryWrapper);
@@ -46,7 +47,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         StpUtil.login(sessionId);
 
-        return StpUtil.getTokenInfo();
+        JSONObject obj = new JSONObject();
+        obj.put("tokenValue", StpUtil.getTokenValue());
+        obj.put("username", user.getUsername());
+
+        return obj;
     }
 
     @Override

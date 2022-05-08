@@ -127,4 +127,9 @@ public class ChartServiceImpl implements ChartService {
         }
         return sum;
     }
+
+    @Override
+    public Integer getAllOrders() {
+        return rentalOrderService.count();
+    }
 }

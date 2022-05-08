@@ -30,4 +30,10 @@ public class VehicleClass implements Serializable {
 
     private Integer bag;
 
+    private Long visit;
+
+    public void buryVisit() {
+        this.setVisit(this.getVisit() + 1);
+    }
+
 }
