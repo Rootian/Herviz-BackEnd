@@ -3,6 +3,7 @@ package com.db.herviz.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.db.herviz.domain.ResponseX;
 import com.db.herviz.entity.Customer;
@@ -43,7 +44,15 @@ public class UserController {
     @SaCheckLogin
     public String saveProfile(@RequestBody String body) {
         Customer customer = JSONObject.parseObject(body, Customer.class);
-        customerService.updateById(customer);
+        String sessionId = StpUtil.getLoginIdAsString();
+        Long uId = Long.valueOf(sessionId.split("_")[1]);
+        QueryWrapper wrapper = new QueryWrapper();
+        try {
+            wrapper.eq("u_id", uId);
+            customerService.update(customer, wrapper);
+        } catch (Exception e) {
+            return ResponseX.fail("update fail");
+        }
         return ResponseX.success(null);
     }
 
