@@ -57,6 +57,7 @@ public class AuthController {
         userService.register(user);
         Customer customer = new Customer();
         customer.setUId(user.getId());
+        customer.setType("i");
         customerService.save(customer);
         return ResponseX.success(customer);
     }

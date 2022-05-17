@@ -25,7 +25,7 @@ public class VehicleClassServiceImpl extends ServiceImpl<VehicleClassMapper, Veh
 
 
     @Override
-    @CacheFind(preKey = "getVehicleClass")
+//    @CacheFind(preKey = "getVehicleClass")
     public VehicleClass getVehicleClassInfo(Long classId) {
         return getById(classId);
     }
